@@ -1,8 +1,8 @@
 import cv2, numpy as np
 from typing import Any, Dict
 from geo import Point, Rectangle
-
-class face_Detection:
+   
+class face_Detection_Haar:
   def __init__(self, path_config_xml:str='', config_detection:Dict={}) -> None:
     self.path_config_xml = path_config_xml
     self.config_detection = config_detection
