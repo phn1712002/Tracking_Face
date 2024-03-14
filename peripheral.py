@@ -1,16 +1,19 @@
 
-import cv2
+import cv2, numpy as np
 from geo import Rectangle, Point
 from PIL import ImageFont, ImageDraw, Image
 
 
 class Camera:
-    def __init__(self, COM, resolution=[1280, 720], flip=False, key_stop='q', name=None):
+    def __init__(self, COM, resolution=[1280, 720], flip=False, key_stop='q', path_font='font/arial.ttf',name=None):
         self.COM = COM
         self.resolution = resolution
         self.flip = flip
         self.key_stop = key_stop
+        self.path_font = path_font
         self.rec = Rectangle(list_point=[Point(), Point(x=resolution[0]), Point(y=resolution[1]), Point(resolution[0], resolution[1])])
+        self.name = name
+        
         
         self.cap = cv2.VideoCapture(self.COM)
         if not self.cap.isOpened():
@@ -45,3 +48,16 @@ class Camera:
             pt2 = (int(rec.point_base.x + rec.vertical), int(rec.point_base.y + rec.horizontal))
             frame = cv2.rectangle(frame, pt1, pt2, *args, **kwargs)
         return frame
+    
+    def write_text(self, frame, text, 
+                  org=(0, 0),
+                  color='red', size_text=35):
+        
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        pil_image = Image.fromarray(frame)
+        font = ImageFont.truetype(self.path_font, size_text)
+        draw = ImageDraw.Draw(pil_image)
+        draw.text(org, text, font=font, fill=color)
+        frame_add_text = np.asarray(pil_image)
+        frame_add_text = cv2.cvtColor(frame_add_text, cv2.COLOR_RGB2BGR)
+        return frame_add_text

@@ -29,7 +29,8 @@ class Rectangle:
     self.area = self. calc_area()
     
   def calc_point_center(self):
-    return sum_point(self.list_point)/len(self.list_point) 
+    point = sum_point(self.list_point)/len(self.list_point)
+    return point
 
   def calc_area(self):
     for idx in range(1, len(self.list_point)):
